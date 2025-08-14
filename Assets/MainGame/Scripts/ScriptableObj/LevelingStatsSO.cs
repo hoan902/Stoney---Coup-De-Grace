@@ -27,4 +27,5 @@ public class StatsConfig
     public int level;
     public int health;
     public int attackDamage;
+    public BaseComboSet comboSet;
 }

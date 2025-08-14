@@ -15,7 +15,7 @@ public class LockInTargetZone : MonoBehaviour
         if (!other.GetComponent<BaseCharacter>())
             return;
         BaseCharacter approchedEnemy = other.GetComponent<BaseCharacter>();
-        if (approchedEnemy.charTeam == m_char.charTeam) 
+        if (approchedEnemy.charTeam == m_char.charTeam || approchedEnemy.isDead) 
             return;
         m_enemiesInRange.Add(approchedEnemy);
         CheckForNearestEnemy();
@@ -30,22 +30,26 @@ public class LockInTargetZone : MonoBehaviour
         CheckForNearestEnemy();
     }
 
+    public void UpdateCurrentStatus(BaseCharacter currentTarget)
+    {
+        if (m_enemiesInRange.Contains(currentTarget))
+        {
+            if (currentTarget.isDead)
+            {
+                m_enemiesInRange.Remove(currentTarget);
+                CheckForNearestEnemy();
+            }
+        }
+    }
+
     void CheckForNearestEnemy()
     {
-        switch (m_enemiesInRange.Count)
-        {
-            case 0:
-                m_char.SetLockInTarget(null);
-                return;
-            case 1:
-                m_char.SetLockInTarget(m_enemiesInRange.First().transform);
-                return;
-        }
-
         Transform nearestEnemy = null;
         float closestDistance = Mathf.Infinity;
         foreach (BaseCharacter enemy in m_enemiesInRange)
         {
+            if (enemy.isDead)
+                continue;
             var distance = Vector3.Distance(m_char.GetCharacterPos().position, enemy.transform.position);
             if (distance < closestDistance)
             {
@@ -53,6 +57,6 @@ public class LockInTargetZone : MonoBehaviour
                 nearestEnemy = enemy.transform;
             }
         }
-        m_char.SetLockInTarget(nearestEnemy);
+        m_char.target = nearestEnemy;
     }
 }

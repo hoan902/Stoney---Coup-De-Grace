@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3921732943753819387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4106752708671304991}
+  - component: {fileID: 3233496290229814706}
+  m_Layer: 0
+  m_Name: Combo-3-Hits
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4106752708671304991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921732943753819387}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.88546, y: 0, z: -7.08254}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3233496290229814706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921732943753819387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58899ef99f6784d45a4470f3e485ae83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyContactFilter:
+    serializedVersion: 2
+    m_Bits: 128
+  atkComboList:
+  - attackAnimtaion: Stomach Punch
+    damage: 10
+    impactCollider: {fileID: 0}
+    attackUsedBodyPart: 1
+  - attackAnimtaion: Head Punch
+    damage: 15
+    impactCollider: {fileID: 0}
+    attackUsedBodyPart: 0
+  - attackAnimtaion: Kidney Punch Right
+    damage: 20
+    impactCollider: {fileID: 0}
+    attackUsedBodyPart: 0
+  hostCharacter: {fileID: 0}
+  m_clipFight:
+  - {fileID: 8300000, guid: cf3a4c3a98f8a594bab81f342c3efd8f, type: 3}
+  - {fileID: 8300000, guid: 7de87ef3c4b29d3498e3fba2fe30c289, type: 3}
+  - {fileID: 8300000, guid: af2644bba25545e41a4838d5b371f66c, type: 3}
+  m_clipMissAtk:
+  - {fileID: 8300000, guid: 3d0ddd57a91d4c6469fb11a78595b74d, type: 3}
+  - {fileID: 8300000, guid: 3d0ddd57a91d4c6469fb11a78595b74d, type: 3}
+  - {fileID: 8300000, guid: 8ad464bdfddc7ea46a4a6672820bf034, type: 3}
+  m_criticalHitSFX: {fileID: 8300000, guid: 77115e5b202e8e14a966fad596bc71c2, type: 3}
+  m_criticalHitCrowd1SFX: {fileID: 8300000, guid: dc0cfd501fe5a5c41b4630f7e1f32586,
+    type: 3}
+  m_criticalHitCrowd2SFX: {fileID: 8300000, guid: c37d8e3d77796994fb9315c859168bdb,
+    type: 3}

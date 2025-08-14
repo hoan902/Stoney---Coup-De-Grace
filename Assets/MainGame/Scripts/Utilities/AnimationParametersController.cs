@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public class AnimationParametersController : MonoBehaviour
 {
@@ -14,43 +15,24 @@ public class AnimationParametersController : MonoBehaviour
 
     public void SetParameterTrigger(AnimatorParameter param)
     {
+        m_animator.SetTrigger(param.ToString());
+    }
+    public void SetParameterBool(AnimatorParameter param, bool isActive)
+    {
         switch (param)
         {
-            case AnimatorParameter.getHit_Head:
-                m_animator.SetTrigger("getHit_Head");
+            case AnimatorParameter.KnockedOut:
+                m_animator.SetBool("isDead", isActive);
                 break;
-            case AnimatorParameter.getHit_Stomach:
-                m_animator.SetTrigger("getHit_Stomach");
-                break;
-            case AnimatorParameter.getHit_Kidney:
-                m_animator.SetTrigger("getHit_Kidney");
-                break;
-            case AnimatorParameter.punching_Stomach:
-                m_animator.SetTrigger("punching_Stomach");
-                break;
-            case AnimatorParameter.punching_KidneyRight:
-                m_animator.SetTrigger("punching_KidneyRight");
-                break;
-            case AnimatorParameter.punching_KidneyLeft:
-                m_animator.SetTrigger("punching_KidneyLeft");
-                break;
-            case AnimatorParameter.punching_Head:
-                m_animator.SetTrigger("punching_Head");
+            case AnimatorParameter.Victory1:
+                m_animator.SetBool("isVictory", isActive);
                 break;
         }
     }
 
     public void SetParameterFloat(AnimatorParameter param, float value)
     {
-        switch (param)
-        {
-            case AnimatorParameter.move_Forward:
-                m_animator.SetFloat("move_Forward", value);
-                break;
-            case AnimatorParameter.move_Strafe:
-                m_animator.SetFloat("move_Strafe", value);
-                break;
-        }
+        m_animator.SetFloat(param.ToString(), value);
     }
 
     public void SetParameterFloat(AnimatorParameter param, float value, float dampTime, float deltaTime)

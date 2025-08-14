@@ -23,4 +23,5 @@ public class LevelConfig
     public int botAddedPerLevel;
     public int levelReqForBotLevelUp;
     public int bonusHealthPerLevel;
+    public bool isAllyAssist; 
 }

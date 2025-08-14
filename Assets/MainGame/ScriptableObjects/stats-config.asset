@@ -17,40 +17,60 @@ MonoBehaviour:
     level: 1
     health: 100
     attackDamage: 10
+    comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
+      type: 3}
   - characterTitle: Newbie Boxer
     level: 2
     health: 150
     attackDamage: 15
+    comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
+      type: 3}
   - characterTitle: Expert Boxer
     level: 3
     health: 250
     attackDamage: 25
+    comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
+      type: 3}
   - characterTitle: Professional Boxer
     level: 4
-    health: 300
+    health: 600
     attackDamage: 35
+    comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
+      type: 3}
   - characterTitle: Legendary Boxer
     level: 5
-    health: 450
+    health: 1000
     attackDamage: 50
+    comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
+      type: 3}
   m_playerLevelingStats:
   - characterTitle: Street Fighter
     level: 1
     health: 125
     attackDamage: 15
+    comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
+      type: 3}
   - characterTitle: Average Boxer
     level: 2
-    health: 175
-    attackDamage: 20
+    health: 250
+    attackDamage: 30
+    comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
+      type: 3}
   - characterTitle: Big League Boxer
     level: 3
-    health: 300
-    attackDamage: 30
+    health: 400
+    attackDamage: 40
+    comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
+      type: 3}
   - characterTitle: Top Boxer
     level: 4
-    health: 350
-    attackDamage: 35
+    health: 550
+    attackDamage: 60
+    comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
+      type: 3}
   - characterTitle: Champion Boxer
     level: 5
-    health: 375
-    attackDamage: 45
+    health: 800
+    attackDamage: 100
+    comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
+      type: 3}
