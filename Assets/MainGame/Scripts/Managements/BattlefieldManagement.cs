@@ -51,6 +51,12 @@ public class BattlefieldManagement : ComponentSingleton<BattlefieldManagement>
 
     public void CleanAll()
     {
+        foreach (var item in m_allCharOnBoard)
+            Destroy(item.gameObject);
+        foreach (var item in m_allTeam1Char)
+            Destroy(item.gameObject);
+        foreach (var item in m_allTeam2Char)
+            Destroy(item.gameObject);
         m_allCharOnBoard.Clear();
         m_allTeam1Char.Clear();
         m_allTeam2Char.Clear();
@@ -95,7 +101,8 @@ public class BattlefieldManagement : ComponentSingleton<BattlefieldManagement>
     void OnBattleEnd(Team winingTeam)
     {
         SoundManager.PlaySound("boxing-bell", false);
-        Debug.Log($"BATTLE ENDED! Team {winingTeam} won!");
+        GameController.OnEndedMatch(winingTeam);
+        GameController.ActiveInput(false);
         switch (winingTeam)
         {
             case Team.Team1:

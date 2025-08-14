@@ -100,6 +100,8 @@ public class PlayerManagement : BaseCharacter
             BaseCharacter ally = BattlefieldManagement.Instance.GetTeam1OnBoard().FirstOrDefault();
             GameController.SetupCamFollowTarget(ally.transform);
         }
+        GameController.ActiveInput(false);
+        Destroy(gameObject);
     }
     #endregion
 
@@ -118,14 +120,8 @@ public class PlayerManagement : BaseCharacter
         var currentState = animator.GetCurrentAnimatorStateInfo(2); //Get animator layer (2 which is Attack layer)
         isAtking = currentState.IsTag("Atk") && currentState.normalizedTime >= 0; //Compare the Tag below the animation name (of the animation box in Animator)
                                                                                   //HoanDN
-                                                                                  //===> Check others UI (Button to swap mode, victory/lose popup UI)
-                                                                                  //===> Check health bar (player health bar too -> UI part) => Complete setup HP but not test yet
                                                                                   //===> Add Eff to know when someone taken dmg (already have SFX and animation, Add FX if possible)
                                                                                   //===> BONUS: crit chance do camera dramatic effect to the hit (use GameController to control CameraMovement)
-                                                                                  //==> Use Event start and end atk to either lock movement when attack,
-                                                                                  //==> Enemy moving again AFTER FINISH ATTACKING (lock movement when attack)
-                                                                                  // After fixing this: finish bot behaviours (still have attacking left)
-                                                                                  // then go for win/lose [GOAL: Finished gameplay prototype first]
         if (isAtking)
             return;
         isAtking = true;
@@ -218,6 +214,9 @@ public class PlayerManagement : BaseCharacter
     public void OnInit()
     {
         isPlayer = true;
+        int totalUpgradeDataCount = ConfigsManagement.Instance.statsConfig.GetTotalPlayerDataCount();
+        if (SaveModel.playerLevel > totalUpgradeDataCount)
+            SaveModel.playerLevel = totalUpgradeDataCount;
         m_currentPlayerStat = ConfigsManagement.Instance.statsConfig.GetPlayerStatByLevel(SaveModel.playerLevel);
         if (m_currentPlayerStat != null)
             SetupStats(m_currentPlayerStat);

@@ -43,6 +43,7 @@ public class GlobalConstants
     public const string CURRENT_LEVEL_OVM = "current-level-OVM";
     public const string CURRENT_LEVEL_MVM = "current-level-MVM";
     public const string CURRENT_PLAYER_LEVEL = "current-player-level";
+    public const string CURRENT_GAME_MODE = "current-game-mode";
     public const string MUSIC = "music-setting";
     public const string SOUND = "sound-setting";
 }

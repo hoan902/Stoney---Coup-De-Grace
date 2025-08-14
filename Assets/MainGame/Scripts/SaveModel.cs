@@ -8,6 +8,9 @@ public class SaveModel
     public static int currentLevelOneVMany;
     public static int currentLevelManyVMany;
     public static int playerLevel;
+    public static int currentMode;
+
+    public static bool paused = false;
 
     public static bool saveFileLoaded = false;
 
@@ -29,6 +32,7 @@ public class SaveModel
         currentLevelOneVMany = PlayerPrefs.GetInt(GlobalConstants.CURRENT_LEVEL_OVM, 1);
         currentLevelManyVMany = PlayerPrefs.GetInt(GlobalConstants.CURRENT_LEVEL_MVM, 1);
         playerLevel = PlayerPrefs.GetInt(GlobalConstants.CURRENT_PLAYER_LEVEL, 1);
+        currentMode = PlayerPrefs.GetInt(GlobalConstants.CURRENT_GAME_MODE, 0);
     }
     
     public static void SaveAllInfo()
@@ -37,6 +41,7 @@ public class SaveModel
         PlayerPrefs.SetInt(GlobalConstants.CURRENT_LEVEL_OVM, currentLevelOneVMany);
         PlayerPrefs.SetInt(GlobalConstants.CURRENT_LEVEL_MVM, currentLevelManyVMany);
         PlayerPrefs.SetInt(GlobalConstants.CURRENT_PLAYER_LEVEL, playerLevel);
+        PlayerPrefs.SetInt(GlobalConstants.CURRENT_GAME_MODE, currentMode);
         PlayerPrefs.Save();
     }
 
@@ -49,15 +54,5 @@ public class SaveModel
     public static void UpdateMaxHp(int currentMaxHp)
     {
         m_maxPlayerHP = currentMaxHp;
-    }
-
-    public void UpdatePlayerLevel(int updatedLevel)
-    {
-        playerLevel = updatedLevel;
-    }
-
-    public void UpdateLevel(int updatedLevel)
-    {
-        currentLevel = updatedLevel;
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,39 +15,103 @@ public class GameManager : MonoBehaviour
 
     private PlayerManagement m_player;
     private bool m_gameReady = false;
+
     private void Awake()
     {
         if(!SaveModel.saveFileLoaded)
             SaveModel.LoadCurrentSave();
+        GameController.changeMode += SwitchGameMode;
+        GameController.playNewLevel += OnNextLevel;
+    }
+    private void OnDestroy()
+    {
+        GameController.changeMode -= SwitchGameMode;
+        GameController.playNewLevel -= OnNextLevel;
+    }
+    private void Start()
+    {
+        StartCoroutine(IStartGame());
     }
 
-    private IEnumerator Start()
+    //HoanDN: Setup countdown before battle start.
+    //-- Pause Menu
+    void InitLevel(GameMode currentGameMode)
     {
-        InitLevel(GameMode.OneVsMany);
+        BattlefieldManagement.Instance.CleanAll();
+        StartCoroutine(ISetupGameField(currentGameMode));
+    }
+    void SetupPlayer()
+    {
+        //-- Setup Player
+        PlayerManagement player = Instantiate(m_playerPref).GetComponent<PlayerManagement>();
+        player.OnInit();
+        BattlefieldManagement.Instance.AddCharToTeam1(player);
+        SaveModel.UpdateMaxHp(player.maxHealth);
+        SaveModel.UpdateHp(player.currentHealth, player.maxHealth);
+        GameController.UpdatePlayerHp(0);
+        m_player = player;
+    }
+    void SetupCharaPos(HashSet<BotCharacter> alliesBot, HashSet<BotCharacter> enemiesBot, int upgradeLevelBot, int bonusHealth)
+    {
+        //-- Setup positions
+        foreach (var allyBot in alliesBot)
+        {
+            allyBot.OnInit(m_player.level > 1 ? m_player.level - 1 : 1, isAlly: true);
+            //SetNearestTarget(allyBot, BattlefieldManagement.Instance.GetTeam2OnBoard());
+        }
+        foreach (var enemyBot in enemiesBot)
+        {
+            enemyBot.OnInit(upgradeLevelBot, bonusHealth);
+            //SetNearestTarget(enemyBot, BattlefieldManagement.Instance.GetTeam1OnBoard());
+        }
+        BattlefieldManagement.Instance.SetupPosSpawnCharacters();
+        GameController.SetupCamFollowTarget(m_player.transform);
+    }
+    void SwitchGameMode(GameMode gameMode)
+    {
+        BattlefieldManagement.Instance.CleanAll();
+        m_gameReady = false;
+        SaveModel.currentMode = (int)gameMode;
+        StartCoroutine(IStartGame());
+    }
+    void OnNextLevel()
+    {
+        StartCoroutine(IStartGame());
+    }
+    void PauseGame()
+    {
+        SaveModel.paused = true;
+        Time.timeScale = 0;
+    }
+    void ResumeGame()
+    {
+        SaveModel.paused = false;
+        Time.timeScale = 1;
+    }
+
+    IEnumerator IStartGame()
+    {
+        BattlefieldManagement.Instance.CleanAll();
+        m_gameReady = false;
+        yield return new WaitForSeconds(1f);
+        InitLevel((GameMode)SaveModel.currentMode);
         yield return new WaitForSeconds(0.2f);
         SoundManager.PlaySound("miss-punch-small", false);
         SoundManager.PlaySound("normalCrowNoise", true, true);
         SoundManager.MuteSound(false);
         SoundManager.MuteMusic(false);
-        //Start with mode One v One
-        yield return new WaitUntil(() => m_gameReady);
+        PauseGame();
+        yield return new WaitForSecondsRealtime(0.2f);
+        GameController.OpenMask();
+        yield return new WaitForSecondsRealtime(0.4f);
+        GameController.CountdownBattleStart(3);
+        yield return new WaitForSecondsRealtime(3f);
         //Only when in game
+        ResumeGame();
         SoundManager.PlaySound("boxing-bell", false);
         GameController.ReadyPlay();
     }
-
-    //HoanDN: Setup countdown before battle start.
-    //-- Win/Lose Condition will be judge here (or in battle field -> need to show popup win/lose)
-    //-- Transition wining/losing to menu with button try again
-    //-- Pause Menu
-    //-- Setup main menu right here before the game start might be good
-    void InitLevel(GameMode currentGameMode)
-    {
-        BattlefieldManagement.Instance.CleanAll();
-        StartCoroutine(SetupBattleField(currentGameMode));
-    }
-
-    IEnumerator SetupBattleField(GameMode currentGameMode)
+    IEnumerator ISetupGameField(GameMode currentGameMode)
     {
         SetupPlayer();
         yield return null;
@@ -55,7 +121,7 @@ public class GameManager : MonoBehaviour
         HashSet<BotCharacter> alliesBot = new HashSet<BotCharacter>();
         if (levelConfig.isAllyAssist)
         {
-            for (int i = 0; i < 2; i++) 
+            for (int i = 0; i < 2; i++)
             {
                 BotCharacter botAlly = Instantiate(m_botAllyPref).GetComponent<BotCharacter>();
                 botAlly.name = "Team-1-bot";
@@ -83,6 +149,9 @@ public class GameManager : MonoBehaviour
         }
         int numOfAddTeam2Bot = levelConfig.botAddedPerLevel * curLevel;
         int upgradeLevelBot = curLevel / levelConfig.levelReqForBotLevelUp;
+        int totalUpgradeDataCount = ConfigsManagement.Instance.statsConfig.GetTotalBotDataCount();
+        if (upgradeLevelBot > totalUpgradeDataCount)
+            upgradeLevelBot = totalUpgradeDataCount;
         if (numOfAddTeam2Bot >= 0)
         {
             if (numOfAddTeam2Bot == 0)
@@ -103,49 +172,5 @@ public class GameManager : MonoBehaviour
             }
         }
         SetupCharaPos(alliesBot, enemiesBot, upgradeLevelBot, bonusHealth);
-        m_gameReady = true;
-    }
-    void SetupPlayer()
-    {
-        //-- Setup Player
-        PlayerManagement player = Instantiate(m_playerPref).GetComponent<PlayerManagement>();
-        player.OnInit();
-        BattlefieldManagement.Instance.AddCharToTeam1(player);
-        SaveModel.UpdateMaxHp(player.maxHealth);
-        SaveModel.UpdateHp(player.currentHealth, player.maxHealth);
-        m_player = player;
-    }
-    void SetupCharaPos(HashSet<BotCharacter> alliesBot, HashSet<BotCharacter> enemiesBot, int upgradeLevelBot, int bonusHealth)
-    {
-        //-- Setup positions
-        foreach (var allyBot in alliesBot)
-        {
-            allyBot.OnInit(m_player.level > 1 ? m_player.level - 1 : 1, isAlly: true);
-            //SetNearestTarget(allyBot, BattlefieldManagement.Instance.GetTeam2OnBoard());
-        }
-        foreach (var enemyBot in enemiesBot)
-        {
-            enemyBot.OnInit(upgradeLevelBot, bonusHealth);
-            //SetNearestTarget(enemyBot, BattlefieldManagement.Instance.GetTeam1OnBoard());
-        }
-        BattlefieldManagement.Instance.SetupPosSpawnCharacters();
-        GameController.SetupCamFollowTarget(m_player.transform);
-    }
-    void SetNearestTarget(BaseCharacter hostChar, HashSet<BaseCharacter> enemiesHashset)
-    {
-        Transform nearestEnemy = null;
-        float closestDistance = Mathf.Infinity;
-        foreach (var enemyTarget in enemiesHashset)
-        {
-            if (enemyTarget.isDead)
-                continue;
-            var distance = Vector3.Distance(hostChar.GetCharacterPos().position, enemyTarget.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                nearestEnemy = enemyTarget.transform;
-            }
-        }
-        hostChar.SetLockInTarget(nearestEnemy);
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField] private CinemachineCamera m_cinemaCam;
+    [SerializeField] private CinemachineFollowZoom m_cineFollowZoomCam;
+    [SerializeField] private CinemachineImpulseSource m_cinemaShakeCam;
 
     private CinemachineBrain m_camBrain;
     private Camera m_unityCamera;
@@ -24,12 +26,14 @@ public class CameraMovement : MonoBehaviour
 
         GameController.cameraFollowTarget += SetupFollowTarget;
         GameController.cameraZoomEff += CameraZoomDramaticEff;
+        GameController.shakeCameraEvent += OnCameraShake;
     }
 
     private void OnDestroy()
     {
         GameController.cameraFollowTarget -= SetupFollowTarget;
         GameController.cameraZoomEff -= CameraZoomDramaticEff;
+        GameController.shakeCameraEvent -= OnCameraShake;
     }
 
     private IEnumerator Start()
@@ -46,14 +50,16 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraZoomDramaticEff()
     {
-        m_unityCamera.DOFieldOfView(40, 0.4f).OnComplete(() =>
-        {
-            m_unityCamera.DOFieldOfView(60, 0.2f);
-        });
-        m_unityCamera.DOShakeRotation(0.4f, 1f).OnComplete((() =>
-        {
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = m_currentFixedUpdateTime * Time.timeScale;
-        }));
+        DOTween.To(() => m_cineFollowZoomCam.FovRange.y,x => m_cineFollowZoomCam.FovRange.y = x, 40f, 0.5f)
+            .OnComplete(() =>
+            {
+                DOTween.To(() => m_cineFollowZoomCam.FovRange.y, x => m_cineFollowZoomCam.FovRange.y = x, 60f, 0.2f);
+            });
+    }
+    private void OnCameraShake()
+    {
+        m_cinemaShakeCam.ImpulseDefinition.ImpulseDuration = 0.2f;
+        m_cinemaShakeCam.ImpulseDefinition.ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Explosion;
+        m_cinemaShakeCam.GenerateImpulse();
     }
 }

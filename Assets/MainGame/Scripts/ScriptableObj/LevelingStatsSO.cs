@@ -19,6 +19,16 @@ public class LevelingStatsSO : ScriptableObject
     {
         return m_playerLevelingStats.Find(stat => stat.level == level);
     }
+    
+    public int GetTotalBotDataCount()
+    {
+        return m_botLevelingStats.Count;
+    }
+    
+    public int GetTotalPlayerDataCount()
+    {
+        return m_playerLevelingStats.Count;
+    }
 }
 [Serializable]
 public class StatsConfig

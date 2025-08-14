@@ -156,12 +156,9 @@ public class BotCharacter : BaseCharacter
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
-
-    //HoanDN: Start attack => Only redirect or moving AFTER DONE ATTACKING
-    // ALso stop attacking when all enemies team are DEAD -> Player Victory animation loop
     IEnumerator IStartFight()
     {
-        while (!isDead || !isGameOver)
+        while (!isDead && !isGameOver)
         {
             switch (charTeam)
             {
@@ -182,33 +179,36 @@ public class BotCharacter : BaseCharacter
             m_agent.stoppingDistance = m_attackRange;
             m_agent.speed = walkSpeed;
             //
-            target.TryGetComponent(out BaseCharacter curTargetChar);
-            int listCount = curTargetChar.listOfEnemiesTargetingYou.Count;
-            Vector3 newScatterSurroundPos = target.position;
-            for (int i = 0; i < listCount; i++)
+            if(target != null)
             {
-                if (curTargetChar.listOfEnemiesTargetingYou[i] == this)
+                target.TryGetComponent(out BaseCharacter curTargetChar);
+                int listCount = curTargetChar.listOfEnemiesTargetingYou.Count;
+                Vector3 newScatterSurroundPos = target.position;
+                for (int i = 0; i < listCount; i++)
                 {
-                    newScatterSurroundPos = new Vector3(
-                        target.position.x + curTargetChar.testRadiusScatter * Mathf.Cos(2 * Mathf.PI * i / listCount),
-                        target.position.y,
-                        target.position.z + curTargetChar.testRadiusScatter * Mathf.Sin(2 * Mathf.PI * i / listCount));
+                    if (curTargetChar.listOfEnemiesTargetingYou[i] == this)
+                    {
+                        newScatterSurroundPos = new Vector3(
+                            target.position.x + curTargetChar.testRadiusScatter * Mathf.Cos(2 * Mathf.PI * i / listCount),
+                            target.position.y,
+                            target.position.z + curTargetChar.testRadiusScatter * Mathf.Sin(2 * Mathf.PI * i / listCount));
+                    }
                 }
-            }
-            m_pointDebug = newScatterSurroundPos;
-            m_agent.SetDestination(newScatterSurroundPos);
+                m_pointDebug = newScatterSurroundPos;
+                m_agent.SetDestination(newScatterSurroundPos);
 
-            float magSpeed = Mathf.Clamp01(m_agent.velocity.magnitude / m_agent.speed);
-            animParamController.SetParameterFloat(AnimatorParameter.move_Forward, magSpeed);
-            yield return new WaitForSeconds(0.5f);
-            if (m_agent.enabled)
-            {
-                if (m_agent.remainingDistance <= m_agent.stoppingDistance && !curTargetChar.isDead)
+                float magSpeed = Mathf.Clamp01(m_agent.velocity.magnitude / m_agent.speed);
+                animParamController.SetParameterFloat(AnimatorParameter.move_Forward, magSpeed);
+                yield return new WaitForSeconds(0.5f);
+                if (m_agent.enabled)
                 {
-                    StartAutoAttack();
-                    yield return new WaitForSeconds(0.7f);
+                    if (m_agent.remainingDistance <= m_agent.stoppingDistance && !curTargetChar.isDead)
+                    {
+                        StartAutoAttack();
+                        yield return new WaitForSeconds(0.7f);
+                    }
                 }
-            } 
+            }        
         }
         if (m_agent.enabled)
             m_agent.isStopped = true;

@@ -19,7 +19,7 @@ MonoBehaviour:
     bonusHealthPerLevel: 50
     isAllyAssist: 0
   - gameMode: 1
-    botAddedPerLevel: 1
+    botAddedPerLevel: 2
     levelReqForBotLevelUp: 3
     bonusHealthPerLevel: 25
     isAllyAssist: 0

@@ -92,8 +92,6 @@ public class SoundManager : MonoBehaviour
         m_currentMusicVolume = targetVolume;
         s_api.m_music.volume = m_currentMusicVolume;
     }
-    
-    //HoanDN: Temporate disable remember sound setting (Might go back to add these setting in polishing phrase *if have enough time, else just finish the ezgames test)
     private void SaveCache()
     {
         PlayerPrefs.SetInt(GlobalConstants.MUSIC, m_musicOn ? 1 : 0);
@@ -237,12 +235,12 @@ public class SoundManager : MonoBehaviour
         return m_clips.FirstOrDefault(t => t.name == clipName);
     }
 
-    /*void OnApplicationQuit()
+    void OnApplicationQuit()
     {
-        MainModel.SaveAllInfo();
-    }*/
+        SaveModel.SaveAllInfo();
+    }
 
-        public static void StopMusic()
+    public static void StopMusic()
     {
         if(s_api.m_music == null)
             return;

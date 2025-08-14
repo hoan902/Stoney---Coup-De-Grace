@@ -44,6 +44,7 @@ public class ThreeComboMoveSet : BaseComboSet
         DamageDealerInfo data = attackData;
         bool characterHited = false;
         bool sent = false;
+        data.damage += hostCharacter.atkDamage;
         while (canHit)
         {
             List<Collider> results = new List<Collider>();
@@ -75,13 +76,10 @@ public class ThreeComboMoveSet : BaseComboSet
                     SoundManager.PlaySound3D(m_criticalHitSFX, 100, false, transform.position); 
                     SoundManager.PlaySound3D(m_criticalHitCrowd1SFX, 100, false, transform.position); 
                     SoundManager.PlaySound3D(m_criticalHitCrowd2SFX, 100, false, transform.position); 
-                    //HoanDN Create Camera Shake system later
-                    //GameController.ShakeCamera();
                 }
                 else
                 {
                     data.attacker.SendMessage("SpawnNormalHitFX");
-                    //GameController.ShakeCameraWeak();
                 }
             }
             //HoanDN: Time slow Eff should be for player only
@@ -93,9 +91,10 @@ public class ThreeComboMoveSet : BaseComboSet
                         Time.timeScale = 1;
                     else
                         Time.timeScale = 0.1f;
+                    //HoanDN: Eff not lookin good, improve later if have a chance
+                    //GameController.CameraZoomEff();
+                    //GameController.ShakeCamera();
                 }
-                //-- HoanDN: Impact effect, Might need to set this for player only, figuring the way to make that later for polishing
-                GameController.CameraZoomEff();
             }
         }
         Time.timeScale = 1;
