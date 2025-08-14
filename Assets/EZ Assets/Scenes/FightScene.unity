@@ -5278,10 +5278,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Camera-Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 5151576914343972568, guid: e2d2cb6843ab26e4a80ad76f51460155,
+        type: 3}
+      propertyPath: Width
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151576914343972568, guid: e2d2cb6843ab26e4a80ad76f51460155,
+        type: 3}
+      propertyPath: FovRange.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5887673204954965304, guid: e2d2cb6843ab26e4a80ad76f51460155,
+        type: 3}
+      propertyPath: field of view
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 7808676696184935404, guid: e2d2cb6843ab26e4a80ad76f51460155,
         type: 3}
       propertyPath: Target.TrackingTarget
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098698272801873969, guid: e2d2cb6843ab26e4a80ad76f51460155,
+        type: 3}
+      propertyPath: TargetOffset.y
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
