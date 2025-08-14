@@ -7,5 +7,4 @@ public class ConfigsManagement : ComponentSingleton<ConfigsManagement>
 {
     public LevelingStatsSO statsConfig;
     public LevelConfigSO levelsRuleConfig;
-    //HoanDN: This is for switching between mode and setup gamemode (applied stats for enemies)
 }

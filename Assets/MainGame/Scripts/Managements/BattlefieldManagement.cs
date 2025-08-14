@@ -93,8 +93,6 @@ public class BattlefieldManagement : ComponentSingleton<BattlefieldManagement>
 
     public void CheckingBattleStatus()
     {
-        Debug.Log("Overall Team 1 Troop: " + m_allTeam1Char.Count);
-        Debug.Log("Overall Team 2 Troop: " + m_allTeam2Char.Count);
         if (m_allTeam1Char.Count == 0 || m_allTeam2Char.Count == 0)
             OnBattleEnd(m_allTeam1Char.Count == 0 ? Team.Team2 : Team.Team1);
     }
@@ -109,7 +107,6 @@ public class BattlefieldManagement : ComponentSingleton<BattlefieldManagement>
                 SoundManager.PlaySound(m_victoryClip, false);
                 foreach (var chara in m_allTeam1Char)
                     chara.OnVictory();
-                //HoanDN: Winning Screen + lv up, Replay or next lv button, Swap mode button, Full Clean level to generate new level or Swaping mode
                 break;
             case Team.Team2:
                 SoundManager.PlaySound(m_loseClip, false);

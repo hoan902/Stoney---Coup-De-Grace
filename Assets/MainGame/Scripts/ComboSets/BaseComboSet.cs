@@ -24,7 +24,7 @@ public class BaseComboSet : MonoBehaviour
     {
         get
         {
-            bool critical = Random.Range(0, 100) <= 20; //HoanDN: base 5% crit rate (Make this into something else later)
+            bool critical = Random.Range(0, 100) <= 20;
             DamageDealerInfo info = new DamageDealerInfo()
             {
                 damage = critical ? (int)(m_damage * 4) : m_damage,

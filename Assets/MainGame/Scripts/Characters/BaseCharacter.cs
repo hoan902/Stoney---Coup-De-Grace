@@ -77,7 +77,6 @@ public class BaseCharacter : MonoBehaviour
         }
         listOfEnemiesTargetingYou.Clear();
         BattlefieldManagement.Instance.CheckingBattleStatus();
-        Debug.Log($"DEAD: {transform.name}");
     }
 
     public virtual void OnUpdateTarget()
@@ -134,11 +133,11 @@ public class BaseCharacter : MonoBehaviour
     #region --- Events call via Send Message
     void SpawnNormalHitFX()
     {
-        //HoanDN: Polishing FX
+
     }
     void SpawnCritHitFX()
     {
-        //HoanDN: Polishing FX
+
     }
     #endregion
 

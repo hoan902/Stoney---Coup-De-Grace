@@ -66,7 +66,6 @@ public class ThreeComboMoveSet : BaseComboSet
                 SoundManager.PlaySound3D(m_clipFight[comboIndex], 100, false, transform.position);
             }
             yield return new WaitForEndOfFrame();
-            //HoanDN: Polish for dramatic effect attack
             if (!sent && recievedHits.Count > 0)
             {
                 sent = true;
@@ -82,7 +81,6 @@ public class ThreeComboMoveSet : BaseComboSet
                     data.attacker.SendMessage("SpawnNormalHitFX");
                 }
             }
-            //HoanDN: Time slow Eff should be for player only
             if (data.attacker.TryGetComponent<PlayerManagement>(out var player))
             {
                 if (data.critical && recievedHits.Count > 0 && characterHited)
@@ -91,9 +89,6 @@ public class ThreeComboMoveSet : BaseComboSet
                         Time.timeScale = 1;
                     else
                         Time.timeScale = 0.1f;
-                    //HoanDN: Eff not lookin good, improve later if have a chance
-                    //GameController.CameraZoomEff();
-                    //GameController.ShakeCamera();
                 }
             }
         }

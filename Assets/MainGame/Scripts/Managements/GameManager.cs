@@ -32,9 +32,6 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(IStartGame());
     }
-
-    //HoanDN: Setup countdown before battle start.
-    //-- Pause Menu
     void InitLevel(GameMode currentGameMode)
     {
         BattlefieldManagement.Instance.CleanAll();

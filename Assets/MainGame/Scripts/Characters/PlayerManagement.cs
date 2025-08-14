@@ -57,11 +57,10 @@ public class PlayerManagement : BaseCharacter
             return;
         var tempJoystickMagnitude = new Vector2(m_movingAxis.x, m_movingAxis.y).sqrMagnitude;
         m_joystickMagnitude = Mathf.Clamp01(tempJoystickMagnitude);
-        //getting the magnitude
         if (m_joystickMagnitude >= movementThreshold)
             MovementAndRotation(m_movingAxis.x, m_movingAxis.y);
         else
-            characterController.Move(new Vector3(0, -9.8f, 0));//gravity when idle
+            characterController.Move(new Vector3(0, -9.8f, 0));
     }
     #endregion
 
@@ -112,82 +111,36 @@ public class PlayerManagement : BaseCharacter
             return;
         m_movingAxis = axis;
     }
-    void OnAttack() //Attack button, for start and attack animation NOT for logic within the attack
+    void OnAttack()
     {
         if (isDead || isGameOver)
             return;
-        //Check attacking status
-        var currentState = animator.GetCurrentAnimatorStateInfo(2); //Get animator layer (2 which is Attack layer)
-        isAtking = currentState.IsTag("Atk") && currentState.normalizedTime >= 0; //Compare the Tag below the animation name (of the animation box in Animator)
-                                                                                  //HoanDN
-                                                                                  //===> Add Eff to know when someone taken dmg (already have SFX and animation, Add FX if possible)
-                                                                                  //===> BONUS: crit chance do camera dramatic effect to the hit (use GameController to control CameraMovement)
+        var currentState = animator.GetCurrentAnimatorStateInfo(2);
+        isAtking = currentState.IsTag("Atk") && currentState.normalizedTime >= 0;
         if (isAtking)
             return;
         isAtking = true;
         equipedComboSet.ComboUpdate();
     }
-
-    //HoanDN: This might be useable later, need more research
-    #region ---- Testing New Input System (not having enough knowledge to use it yet)
-    /*
-     * void MovementAndRotation(float horizontal, float vertical)
-    {
-        Vector3 rightMovement = vectorRight * (walkSpeed * Time.deltaTime * horizontal);//getting right movement out of joystick(relative to camera)
-        Vector3 upMovement = vectorForward * (walkSpeed * Time.deltaTime * vertical); //getting up movement out of joystick(relative to camera)
-        Vector3 heading = Vector3.Normalize(rightMovement + upMovement); //final movement vector
-        heading.y = -9.8f;//gravity while moving
-        characterController.Move(heading * (walkSpeed * Time.deltaTime));//move
-        if (lookToMovementDirection) //look to movement direction
-        {
-            Vector3 forward = new Vector3(heading.x, characterVisual.forward.y, heading.z);
-            characterVisual.DOLookAt(characterVisual.position + forward, 0.3f);
-        }
-        if (target != null)
-        {
-            Vector3 lookPosition = new Vector3(target.position.x, characterVisual.position.y, target.position.z);
-            characterVisual.DOLookAt(lookPosition, 0.3f);
-        }
-    }
-    public void OnMoving(InputAction.CallbackContext vector)
-    {
-        var joystickVector = vector.ReadValue<Vector2>();
-        var tempJoystickMagnitude = vector.ReadValue<Vector2>().sqrMagnitude;
-        joystickMagnitude = Mathf.Clamp01(tempJoystickMagnitude);
-        //getting the magnitude
-        if (joystickMagnitude >= movementThreshold)
-            MovementAndRotation(joystickVector.x, joystickVector.y);
-        else
-            characterController.Move(new Vector3(0, -9.8f, 0));//gravity when idle
-    }
-    void MoveAnims(Vector3 move)
-    {
-        Vector3 localMove = transform.InverseTransformDirection(move);//inversing local move from the input
-        parameterStrafe = localMove.x;//x is right input relative to camera 
-        parameterForward = localMove.z;//z is forward joystick input relative to camera
-        animParamController.SetParameterFloat(AnimatorParameter.move_Strafe,parameterStrafe * 2f, 0.01f, Time.deltaTime);
-    }
-    */
-    #endregion
     #endregion
 
     #region --- Private Classes
     void RecalculateCamera(Camera currentCam)
     {
             Camera cam = currentCam;
-            vectorForward = cam.transform.forward; //camera forward
+            vectorForward = cam.transform.forward; 
             vectorForward.y = 0;
             vectorForward = Vector3.Normalize(vectorForward);
-            vectorRight = Quaternion.Euler(new Vector3(0, 90, 0)) * vectorForward; //camera right
+            vectorRight = Quaternion.Euler(new Vector3(0, 90, 0)) * vectorForward; 
     }
     void MovementAndRotation(float horizontal, float vertical)
     {
-        Vector3 rightMovement = vectorRight * (walkSpeed * Time.deltaTime * horizontal);//getting right movement out of joystick(relative to camera)
-        Vector3 upMovement = vectorForward * (walkSpeed * Time.deltaTime * vertical); //getting up movement out of joystick(relative to camera)
-        Vector3 heading = Vector3.Normalize(rightMovement + upMovement); //final movement vector
-        heading.y = -9.8f;//gravity while moving
-        characterController.Move(heading * (walkSpeed * Time.deltaTime));//move
-        if (lookToMovementDirection) //look to movement direction
+        Vector3 rightMovement = vectorRight * (walkSpeed * Time.deltaTime * horizontal);
+        Vector3 upMovement = vectorForward * (walkSpeed * Time.deltaTime * vertical);
+        Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
+        heading.y = -9.8f;
+        characterController.Move(heading * (walkSpeed * Time.deltaTime));
+        if (lookToMovementDirection) 
         {
             Vector3 forward = new Vector3(heading.x, characterVisual.forward.y, heading.z);
             characterVisual.DOLookAt(characterVisual.position + forward, 0.3f);
