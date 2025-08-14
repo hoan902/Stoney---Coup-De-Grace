@@ -69,7 +69,6 @@ public class BaseCharacter : MonoBehaviour
     public virtual void Dead()
     {
         isDead = true;
-        animator.Play("Knocked Out", 0, 0f);
         animParamController.SetParameterBool(AnimatorParameter.KnockedOut, isDead);
         BattlefieldManagement.Instance.RemoveChar(this, charTeam);
         if (target != null)

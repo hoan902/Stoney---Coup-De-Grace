@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
         foreach (var enemyBot in enemiesBot)
         {
             enemyBot.OnInit(upgradeLevelBot, bonusHealth);
-            //SetNearestTarget(enemyBot, BattlefieldManagement.Instance.GetTeam1OnBoard());
+            //SetNearestTarget(enemyBot, BattlefieldManagement.Instance.GetTeam1OnBoard()); 
         }
         BattlefieldManagement.Instance.SetupPosSpawnCharacters();
         GameController.SetupCamFollowTarget(m_player.transform);
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
         SaveModel.paused = false;
         Time.timeScale = 1;
     }
-
+    #region --- IEnumerators
     IEnumerator IStartGame()
     {
         BattlefieldManagement.Instance.CleanAll();
@@ -150,6 +150,8 @@ public class GameManager : MonoBehaviour
         int numOfAddTeam2Bot = levelConfig.botAddedPerLevel * curLevel;
         int upgradeLevelBot = curLevel / levelConfig.levelReqForBotLevelUp;
         int totalUpgradeDataCount = ConfigsManagement.Instance.statsConfig.GetTotalBotDataCount();
+        if (upgradeLevelBot <= 0)
+            upgradeLevelBot = 1;
         if (upgradeLevelBot > totalUpgradeDataCount)
             upgradeLevelBot = totalUpgradeDataCount;
         if (numOfAddTeam2Bot >= 0)
@@ -173,4 +175,6 @@ public class GameManager : MonoBehaviour
         }
         SetupCharaPos(alliesBot, enemiesBot, upgradeLevelBot, bonusHealth);
     }
+    #endregion
+
 }
