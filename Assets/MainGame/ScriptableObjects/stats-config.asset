@@ -21,39 +21,39 @@ MonoBehaviour:
       type: 3}
   - characterTitle: Newbie Boxer
     level: 2
-    health: 200
+    health: 350
     attackDamage: 15
     comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
       type: 3}
   - characterTitle: Expert Boxer
     level: 3
-    health: 300
-    attackDamage: 20
+    health: 500
+    attackDamage: 30
     comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
       type: 3}
   - characterTitle: Professional Boxer
     level: 4
-    health: 600
-    attackDamage: 25
+    health: 800
+    attackDamage: 50
     comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
       type: 3}
   - characterTitle: Legendary Boxer
     level: 5
-    health: 1000
-    attackDamage: 30
+    health: 1500
+    attackDamage: 70
     comboSet: {fileID: 3233496290229814706, guid: b562d31644d95094fb60475612e76a31,
       type: 3}
   m_playerLevelingStats:
   - characterTitle: Street Fighter
     level: 1
     health: 200
-    attackDamage: 15
+    attackDamage: 30
     comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
       type: 3}
   - characterTitle: Average Boxer
     level: 2
     health: 350
-    attackDamage: 30
+    attackDamage: 35
     comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
       type: 3}
   - characterTitle: Big League Boxer
@@ -71,6 +71,6 @@ MonoBehaviour:
   - characterTitle: Champion Boxer
     level: 5
     health: 900
-    attackDamage: 80
+    attackDamage: 120
     comboSet: {fileID: 3233496290229814706, guid: 1c52eb29d9facad4d9b042d96ecb75af,
       type: 3}
